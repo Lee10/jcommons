@@ -5,13 +5,19 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.SequenceInputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by lee on 2017/2/14.
@@ -268,4 +274,33 @@ public class FileUtils {
 		}
 		return charset;
 	}
+
+	public static String merge(String filepath1, String filepath2) throws IOException {
+
+		InputStream s1 = new FileInputStream(new File("/Users/lee/Downloads/1.txt"));
+		InputStream s2 = new FileInputStream(new File("/Users/lee/Downloads/2.txt"));
+		Vector<InputStream> v = new Vector<InputStream>();
+		v.addElement(s1);
+		v.addElement(s2);
+		Enumeration<InputStream> e = v.elements();
+
+		SequenceInputStream se = new SequenceInputStream(e);
+		String z = "/Users/lee/Downloads/";
+		String x = "3.txt";
+		File ff = new File(z);
+		if (!ff.exists()) {
+			ff.mkdirs();
+		}
+		ff = new File(z + File.separator + x);
+		OutputStream bw = new FileOutputStream(ff);
+		byte[] b = new byte[1024];
+		int len = 0;
+		while ((len = se.read(b)) != -1) {
+			bw.write(b,0, len);//将缓冲区的数据输出
+			bw.write("\r\n".getBytes());//回车换行
+		}
+		return z + x;
+	}
+
+
 }

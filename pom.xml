@@ -25,25 +25,38 @@
 		<mail.version>1.4.7</mail.version>
 		<javacsv.version>2.0</javacsv.version>
 		<mongo.driver.version>3.4.2</mongo.driver.version>
+		<httpclient.version>4.5.2</httpclient.version>
+		<kafka.version>0.8.2.2</kafka.version>
 	</properties>
 	
 	<dependencies>
+		
+		<!-- junit start -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- junit end -->
+		
+		<!-- commons-lang start -->
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>${commons.lang.version}</version>
 		</dependency>
+		<!-- commons-lang end -->
+		
+		<!-- commons-collections start -->
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>${commons.collections.version}</version>
 		</dependency>
+		<!-- commons-collections end -->
+		
+		<!-- commons-beanutils start -->
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
@@ -55,16 +68,33 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- commons-beanutils end -->
+		
+		<!-- commons-codec start -->
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>${commons.codec.version}</version>
 		</dependency>
+		<!-- commons-codec end -->
+		
+		<!-- commons-logging start -->
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>${commons.logging.version}</version>
 		</dependency>
+		<!-- commons-logging end -->
+		
+		<!-- commons-net start -->
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>${commons.net.version}</version>
+		</dependency>
+		<!-- commons-net end -->
+		
+		<!-- poi start -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
@@ -75,6 +105,9 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>${poi.version}</version>
 		</dependency>
+		<!-- poi end -->
+		
+		<!-- json-lib start -->
 		<dependency>
 			<groupId>net.sf.json-lib</groupId>
 			<artifactId>json-lib</artifactId>
@@ -91,36 +124,40 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- json-lib end -->
+		
+		<!-- mail start -->
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>${mail.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>commons-net</groupId>
-			<artifactId>commons-net</artifactId>
-			<version>${commons.net.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-httpclient</groupId>
-			<artifactId>commons-httpclient</artifactId>
-			<version>${commons.httpclient.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>commons-codec</artifactId>
-					<groupId>commons-codec</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>commons-logging</artifactId>
-					<groupId>commons-logging</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+		<!-- mail end -->
+		
+		<!-- csv start -->
 		<dependency>
 			<groupId>net.sourceforge.javacsv</groupId>
 			<artifactId>javacsv</artifactId>
 			<version>${javacsv.version}</version>
 		</dependency>
+		<!-- csv end -->
+		
+		<!-- kafka start -->
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka_2.10</artifactId>
+			<version>${kafka.version}</version>
+		</dependency>
+		<!-- kafka end -->
+		
+		<!-- httpclient start -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${httpclient.version}</version>
+		</dependency>
+		<!-- httpclient end -->
+		
 	</dependencies>
 	
 	<build>

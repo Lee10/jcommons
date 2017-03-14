@@ -12,8 +12,8 @@ public class MailUtilsTest {
 
 		try {
 
-			MailUtils.send("smtp.huitone.com", "lipeilin@huitone.com",
-			               "lee211419!", "测试附件", "test",
+			MailUtils.send("smtp.huitone.com", "open-support@huitone.com",
+			               "huitone2214", "测试邮件", "test",
 			               "lipeilin@huitone.com", null);
 		} catch (MailException e) {
 			e.printStackTrace();
