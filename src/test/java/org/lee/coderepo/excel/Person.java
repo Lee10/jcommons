@@ -12,6 +12,8 @@ public class Person {
 	private boolean sex;
 	private Date brithday;
 
+	public Person(){}
+
 	public Person(String name, int age, boolean sex, Date brithday){
 		this.name = name;
 		this.age = age;

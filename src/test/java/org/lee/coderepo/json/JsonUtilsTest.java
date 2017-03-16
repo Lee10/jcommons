@@ -25,7 +25,12 @@ public class JsonUtilsTest {
 		DateJsonValueProcessor processor = new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss");
 		JsonConfig config = new JsonConfig();
 		config.registerJsonValueProcessor(Date.class, processor);
-		System.out.println(JsonUtils.toString(person, config));
+
+		String jsonstr = JsonUtils.toString(person, config);
+		System.out.println(jsonstr);
+
+		Person person1 = (Person) JsonUtils.toBean(jsonstr, Person.class);
+		System.out.println(person1);
 	}
 
 }

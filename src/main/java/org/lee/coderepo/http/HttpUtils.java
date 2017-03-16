@@ -3,20 +3,28 @@ package org.lee.coderepo.http;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +41,8 @@ public class HttpUtils {
 	public static final String JSON_CONTENT_TYPE = "application/json";
 
 	static {
-		RequestConfig config = RequestConfig.custom().setConnectTimeout(connectTimeout).setSocketTimeout(socketTimeout).build();
+		RequestConfig config = RequestConfig.custom().setConnectTimeout(connectTimeout)
+		                                    .setSocketTimeout(socketTimeout).build();
 		httpClient = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
 	}
 
@@ -45,93 +54,85 @@ public class HttpUtils {
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public static String get(String url) throws ClientProtocolException, IOException {
+	public static String get(String url) throws IOException {
 
 		HttpGet httpGet = new HttpGet(url);
+		CloseableHttpResponse response = httpClient.execute(httpGet);
+		return response.getStatusLine().getStatusCode() == 200 ? readResponse(response.getEntity().getContent()) : "";
+	}
 
-		ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+	/**
+	 * GET 请求
+	 *
+	 * @param url    请求地址
+	 * @param params 请求参数
+	 * @return
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
+	public static String get(String url, Map<String, String> params) throws IOException, URISyntaxException {
+		return get(url, params, "utf-8");
+	}
 
-			public String handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
-				int status = response.getStatusLine().getStatusCode();
-				if (status >= 200 && status < 300) {
-					HttpEntity entity = response.getEntity();
-					return entity != null ? EntityUtils.toString(entity, "UTF-8") : null;
-				} else {
-					throw new ClientProtocolException("Unexpected response status: " + status);
-				}
-			}
-		};
-		return httpClient.execute(httpGet, responseHandler);
+	/**
+	 * GET 请求
+	 *
+	 * @param url     请求地址
+	 * @param params  请求参数
+	 * @param charset 请求编码
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	public static String get(String url, Map<String, String> params, String charset)
+			throws URISyntaxException, IOException {
+
+		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
+		for (String key : params.keySet()) {
+			paramList.add(new BasicNameValuePair(key, params.get(key)));
+		}
+		String queryString = URLEncodedUtils.format(paramList, charset);
+		return get(url + "?" + queryString);
 	}
 
 	/**
 	 * POST 请求
-	 * @param url  请求地址
-	 * @param json 请求入参，json格式
+	 *
+	 * @param url    请求地址
+	 * @param params 请求参数
 	 * @return
-	 * @throws ClientProtocolException
-	 * @throws IOException
 	 */
-	public static String post(String url, String json) throws ClientProtocolException, IOException {
-		return post(url, json, JSON_CONTENT_TYPE, null, null);
+	public static String post(String url, Map<String, String> params) {
+		return post(url, params);
 	}
 
 	/**
 	 * POST 请求
-	 * @param url           请求地址
-	 * @param json          请求入参
-	 * @param encodeCharset 编码格式
-	 * @param decodeCharset 解码格式
+	 *
+	 * @param url     请求地址
+	 * @param params  请求参数
+	 * @param charset 请求编码
 	 * @return
-	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public static String post(String url, String json, String encodeCharset, String decodeCharset) throws ClientProtocolException, IOException {
-		return post(url, json, JSON_CONTENT_TYPE, encodeCharset, decodeCharset);
-	}
+	public static String post(String url, Map<String, String> params, String charset)
+			throws IOException {
 
-	/**
-	 * POST 请求
-	 * @param url           请求地址
-	 * @param params        请求参数
-	 * @param contentType   数据类型
-	 * @param encodeCharset 编码格式
-	 * @param decodeCharset 解码格式
-	 * @return
-	 * @throws ClientProtocolException
-	 * @throws IOException
-	 */
-	public static String post(String url, String params, String contentType, String encodeCharset, String decodeCharset) throws ClientProtocolException, IOException {
+		List<NameValuePair> paramList = new ArrayList<NameValuePair>();
+		for (String key : params.keySet()) {
+			paramList.add(new BasicNameValuePair(key, params.get(key)));
+		}
 
-		HttpPost httpPost = new HttpPost(url);
+		HttpPost post = new HttpPost(url);
+		post.setEntity(new UrlEncodedFormEntity(paramList, charset));
 
-		encodeCharset = StringUtils.isNotEmpty(encodeCharset) ? encodeCharset : "UTF-8";
-		decodeCharset = StringUtils.isNotEmpty(decodeCharset) ? decodeCharset : "UTF-8";
-
-		StringEntity entity = new StringEntity(params, encodeCharset);
-		entity.setContentEncoding(encodeCharset);
-		entity.setContentType(contentType);
-		httpPost.setEntity(entity);
-
-		final String finalDecodeCharset = decodeCharset;
-		ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
-
-			public String handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
-				int status = response.getStatusLine().getStatusCode();
-				if (status >= 200 && status < 300) {
-					HttpEntity entity = response.getEntity();
-					return entity != null ? EntityUtils.toString(entity, finalDecodeCharset) : null;
-				} else {
-					throw new ClientProtocolException("Unexpected response status: " + status);
-				}
-			}
-		};
-
-		return httpClient.execute(httpPost, responseHandler);
+		CloseableHttpResponse response = httpClient.execute(post);
+		return response.getStatusLine().getStatusCode() == 200 ? readResponse(response.getEntity().getContent()) : "";
 	}
 
 	/**
 	 * 下载文件并返回文件路径
+	 *
 	 * @param url      下载url
 	 * @param fileName 保存的文件名（可以为null）
 	 */
@@ -169,13 +170,30 @@ public class HttpUtils {
 					fos.close();
 				}
 			}
-		}catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			if(response != null) response.close();
+		} finally {
+			if (response != null) response.close();
 			EntityUtils.consume(entity);
 		}
 		return "";
+	}
+
+	/**
+	 * 读取流数据
+	 * @param in 数据流
+	 * @return
+	 * @throws IOException
+	 */
+	private static String readResponse(InputStream in) throws IOException {
+
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		String line = null;
+		StringBuffer lineBuffer = new StringBuffer();
+		while ((line = reader.readLine()) != null) {
+			lineBuffer.append(line);
+		}
+		return lineBuffer.toString();
 	}
 
 }
