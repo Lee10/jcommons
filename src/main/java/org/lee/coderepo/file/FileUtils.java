@@ -15,7 +15,6 @@ import java.io.OutputStream;
 import java.io.SequenceInputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
 
@@ -25,7 +24,7 @@ import java.util.Vector;
  */
 public class FileUtils {
 
-	public static String pathSeparator = System.getProperty("file.separator");
+	public static String fileSeparator = System.getProperty("file.separator");
 	public static String lineSeparator = System.getProperty("line.separator");
 
 	/***
@@ -158,17 +157,29 @@ public class FileUtils {
 	}
 
 	/**
-	 * 将数据dataList写入指定filename中
+	 * 将数据dataList以追加的方式写入指定filename中
 	 * @param fileName 文件名称
 	 * @param dataList 数据集合
 	 * @return
 	 * @throws IOException
 	 */
 	public static boolean write(String fileName, List<String> dataList) throws IOException {
+		return write(fileName, dataList, true);
+	}
+
+	/**
+	 * 将数据dataList写入指定filename中, 并可选择是否追加
+	 * @param fileName 文件路径
+	 * @param dataList 数据集合
+	 * @param isCover 是否追加， true: 在文件末尾追加数据，false:从头开始覆盖文本
+	 * @return
+	 * @throws IOException
+	 */
+	public static boolean write(String fileName, List<String> dataList, boolean isAdd) throws IOException {
 		boolean result = false;
 		FileWriter writer = null;
 		try {
-			writer = new FileWriter(fileName, true);
+			writer = new FileWriter(fileName, isAdd);
 			for (String str : dataList) {
 				writer.write(str + "\r\n");
 			}
@@ -179,6 +190,39 @@ public class FileUtils {
 			if(writer != null) writer.close();
 		}
 		return result;
+	}
+
+	/**
+	 * 在文件末尾追加一行文本 text
+	 * @param fileName 文件路径
+	 * @param text 文本
+	 * @return
+	 * @throws IOException
+	 */
+	public static boolean append(String fileName, String text) throws IOException {
+		boolean result = false;
+		FileWriter writer = null;
+		try {
+			writer = new FileWriter(fileName, true);
+			writer.write(text + "\r\n");
+			result = true;
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}finally {
+			if(writer != null) writer.close();
+		}
+		return result;
+	}
+
+	/**
+	 * 修改文件名
+	 * @param fileName 文件路径
+	 * @param newFileName 新文件名
+	 * @return
+	 */
+	public static boolean rename(String fileName, String newFileName){
+		File file = new File(fileName);
+		return file.exists()? file.renameTo(new File(file.getParent() + fileSeparator + newFileName)) : false;
 	}
 
 	/**
@@ -274,33 +318,4 @@ public class FileUtils {
 		}
 		return charset;
 	}
-
-	public static String merge(String filepath1, String filepath2) throws IOException {
-
-		InputStream s1 = new FileInputStream(new File("/Users/lee/Downloads/1.txt"));
-		InputStream s2 = new FileInputStream(new File("/Users/lee/Downloads/2.txt"));
-		Vector<InputStream> v = new Vector<InputStream>();
-		v.addElement(s1);
-		v.addElement(s2);
-		Enumeration<InputStream> e = v.elements();
-
-		SequenceInputStream se = new SequenceInputStream(e);
-		String z = "/Users/lee/Downloads/";
-		String x = "3.txt";
-		File ff = new File(z);
-		if (!ff.exists()) {
-			ff.mkdirs();
-		}
-		ff = new File(z + File.separator + x);
-		OutputStream bw = new FileOutputStream(ff);
-		byte[] b = new byte[1024];
-		int len = 0;
-		while ((len = se.read(b)) != -1) {
-			bw.write(b,0, len);//将缓冲区的数据输出
-			bw.write("\r\n".getBytes());//回车换行
-		}
-		return z + x;
-	}
-
-
 }

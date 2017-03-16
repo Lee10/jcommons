@@ -13,6 +13,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.jdk.version>1.8</project.build.jdk.version>
 		<junit.version>4.11</junit.version>
+		<log4j.version>1.2.17</log4j.version>
+		<slf4j.api.version>1.7.21</slf4j.api.version>
 		<commons.lang.version>2.6</commons.lang.version>
 		<commons.collections.version>3.2.1</commons.collections.version>
 		<commons.net.version>3.5</commons.net.version>
@@ -27,6 +29,8 @@
 		<mongo.driver.version>3.4.2</mongo.driver.version>
 		<httpclient.version>4.5.2</httpclient.version>
 		<kafka.version>0.8.2.2</kafka.version>
+		<javax.servlet.api.version>3.1.0</javax.servlet.api.version>
+		<zookeeper.version>3.4.6</zookeeper.version>
 	</properties>
 	
 	<dependencies>
@@ -39,6 +43,27 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- junit end -->
+		
+		<!-- log start -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.api.version}</version>
+		</dependency>
+		<!-- log end -->
+		
+		<!-- zookeeper start -->
+		<dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
+			<version>${zookeeper.version}</version>
+		</dependency>
+		<!-- zookeeper end -->
 		
 		<!-- commons-lang start -->
 		<dependency>
@@ -147,6 +172,20 @@
 			<groupId>org.apache.kafka</groupId>
 			<artifactId>kafka_2.10</artifactId>
 			<version>${kafka.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>log4j</artifactId>
+					<groupId>log4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>zookeeper</artifactId>
+					<groupId>org.apache.zookeeper</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- kafka end -->
 		
@@ -155,8 +194,22 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>${httpclient.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-codec</artifactId>
+					<groupId>commons-codec</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- httpclient end -->
+		
+		<!-- servlet-api start -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${javax.servlet.api.version}</version>
+		</dependency>
+		<!-- servlet-api end -->
 		
 	</dependencies>
 	

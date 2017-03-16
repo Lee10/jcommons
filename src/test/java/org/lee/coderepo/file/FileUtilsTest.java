@@ -11,17 +11,8 @@ import java.util.HashSet;
 public class FileUtilsTest {
 
 	@Test
-	public void testMerge(){
-
-		try {
-			FileUtils.merge(null, null);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-
-
-
+	public void testRename(){
+		System.out.println(FileUtils.rename("/Users/lee/Downloads/place_market_return.txt", "1.txt"));
 	}
 
 }
