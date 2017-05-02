@@ -1,5 +1,7 @@
 package org.lee.coderepo.http;
 
+import net.sf.json.JSONObject;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
@@ -11,6 +13,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
@@ -102,8 +105,8 @@ public class HttpUtils {
 	 * @param params 请求参数
 	 * @return
 	 */
-	public static String post(String url, Map<String, String> params) {
-		return post(url, params);
+	public static String post(String url, Map<String, String> params) throws IOException {
+		return post(url, params, "utf-8");
 	}
 
 	/**
@@ -126,6 +129,16 @@ public class HttpUtils {
 		HttpPost post = new HttpPost(url);
 		post.setEntity(new UrlEncodedFormEntity(paramList, charset));
 
+		CloseableHttpResponse response = httpClient.execute(post);
+		return response.getStatusLine().getStatusCode() == 200 ? readResponse(response.getEntity().getContent()) : "";
+	}
+	
+	public static String postPayload(String url, String params) throws IOException {
+		
+		HttpPost post = new HttpPost(url);
+		if(StringUtils.isNotEmpty(params)){
+			post.setEntity(new StringEntity(params, "text/plain", "utf-8"));
+		}
 		CloseableHttpResponse response = httpClient.execute(post);
 		return response.getStatusLine().getStatusCode() == 200 ? readResponse(response.getEntity().getContent()) : "";
 	}

@@ -47,4 +47,12 @@ public class DateUtils {
 		}
 		return null;
 	}
+	
+	public static Date parse(long timestamp) {
+		return parse(format(new Date(timestamp)));
+	}
+	
+	public static Date parse(long timestamp, SimpleDateFormat format) {
+		return parse(format(new Date(timestamp), format), format);
+	}
 }

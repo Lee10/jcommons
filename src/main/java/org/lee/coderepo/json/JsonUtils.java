@@ -29,37 +29,33 @@ public class JsonUtils {
 		if (obj instanceof List || obj instanceof Map) return JSONArray.fromObject(obj, jsonConfig).toString();
 		return JSONObject.fromObject(obj, jsonConfig).toString();
 	}
-
-	public static Object toBean(String json, Class<? extends Object> clazz) {
-
-		Object obj = null;
-
+	
+	public static <T> T toBean(String json, Class<T> clazz) {
+		
+		T t = null;
 		try {
 			JSONObject jsonObj = JSONObject.fromObject(json);
 			String[] dateFormats = new String[]{"yyyy-MM-dd HH:mm:ss"};    // 登记时间格式，以防止JSONObject将时间解析成当前系统时间
 			JSONUtils.getMorpherRegistry().registerMorpher(new DateMorpher(dateFormats));
-			obj = JSONObject.toBean(jsonObj, clazz);
+			t = (T) JSONObject.toBean(jsonObj, clazz);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		return obj;
+		return t;
 	}
-
-	public static Object toBean(String json, Class<? extends Object> clazz, Map<String, Class<? extends Object>> classMap) {
-
-		Object obj = null;
-
+	
+	public static <T> T toBean(String json, Class<T> clazz, Map<String, Class<T>> classMap) {
+		
+		T t = null;
 		try {
 			JSONObject jsonObj = JSONObject.fromObject(json);
 			String[] dateFormats = new String[]{"yyyy-MM-dd HH:mm:ss"};    // 登记时间格式，以防止JSONObject将时间解析成当前系统时间
 			JSONUtils.getMorpherRegistry().registerMorpher(new DateMorpher(dateFormats));
-			obj = JSONObject.toBean(jsonObj, clazz, classMap);
+			t = (T) JSONObject.toBean(jsonObj, clazz, classMap);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		return obj;
+		return t;
 	}
 
 	@SuppressWarnings("unchecked")
