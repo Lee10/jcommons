@@ -6,9 +6,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Enumeration;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -109,6 +114,84 @@ public class GZipUtils {
 			}
 		}
 		return result;
+	}
+	
+	/**
+	 * 压缩文件为zip 格式
+	 * @param inFileName
+	 * @param outFileName
+	 * @return
+	 */
+	public static boolean zip(String inFileName, String outFileName) {
+		boolean flag = false;
+		ZipInputStream zipInputStream = null;
+		FileOutputStream out = null;
+		try {
+			zipInputStream = new ZipInputStream(new FileInputStream(inFileName));
+			out = new FileOutputStream(outFileName);
+			byte[] bt = new byte[BUFFER];
+			int length = 0;
+			while ((length = zipInputStream.read(bt)) > 0) {
+				out.write(bt, 0, length);
+			}
+			flag = true;
+		} catch (Exception e) {
+			flag = false;
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				zipInputStream.close();
+				out.flush();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return flag;
+	}
+	
+	/**
+	 * 解压zip格式压缩文件
+	 * @param zipFile
+	 * @param descDir
+	 * @throws IOException
+	 */
+	public static void unZipFiles(File zipFile, String descDir) throws IOException {
+		File pathFile = new File(descDir);
+		if (!pathFile.exists()) {
+			pathFile.mkdirs();
+		}
+		ZipFile zip = new ZipFile(zipFile);
+		for (Enumeration entries = zip.entries(); entries.hasMoreElements(); ) {
+			ZipEntry entry = (ZipEntry) entries.nextElement();
+			String zipEntryName = entry.getName();
+			InputStream in = null;
+			OutputStream out = null;
+			try {
+				in = zip.getInputStream(entry);
+				String outPath = (descDir + zipEntryName).replaceAll("\\*", "/");
+				;
+				//判断路径是否存在,不存在则创建文件路径
+				File file = new File(outPath.substring(0, outPath.lastIndexOf('/')));
+				if (!file.exists()) {
+					file.mkdirs();
+				}
+				//判断文件全路径是否为文件夹,如果是上面已经上传,不需要解压
+				if (new File(outPath).isDirectory()) continue;
+				
+				out = new FileOutputStream(outPath);
+				byte[] buf1 = new byte[1024];
+				int len;
+				while ((len = in.read(buf1)) > 0) {
+					out.write(buf1, 0, len);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (in != null) in.close();
+				if (out != null) out.close();
+			}
+		}
 	}
 
 	private static boolean put(File f, ZipOutputStream out, String dir) {
