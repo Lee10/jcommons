@@ -32,7 +32,7 @@
 		<javax.servlet.api.version>3.1.0</javax.servlet.api.version>
 		<zookeeper.version>3.4.6</zookeeper.version>
 	</properties>
-	
+
 	<dependencies>
 		
 		<!-- junit start -->
@@ -56,28 +56,6 @@
 			<version>${slf4j.api.version}</version>
 		</dependency>
 		<!-- log end -->
-		
-		<!-- zookeeper start -->
-		<dependency>
-			<groupId>org.apache.zookeeper</groupId>
-			<artifactId>zookeeper</artifactId>
-			<version>${zookeeper.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>log4j</artifactId>
-					<groupId>log4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>junit</artifactId>
-					<groupId>junit</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<!-- zookeeper end -->
 		
 		<!-- commons-lang start -->
 		<dependency>
@@ -181,28 +159,6 @@
 		</dependency>
 		<!-- csv end -->
 		
-		<!-- kafka start -->
-		<dependency>
-			<groupId>org.apache.kafka</groupId>
-			<artifactId>kafka_2.10</artifactId>
-			<version>${kafka.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>log4j</artifactId>
-					<groupId>log4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>zookeeper</artifactId>
-					<groupId>org.apache.zookeeper</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<!-- kafka end -->
-		
 		<!-- httpclient start -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -226,9 +182,31 @@
 		<!-- servlet-api end -->
 
 		<dependency>
-			<groupId>jdom</groupId>
+			<groupId>org.jdom</groupId>
 			<artifactId>jdom</artifactId>
-			<version>1.0</version>
+			<version>2.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-dbutils</groupId>
+			<artifactId>commons-dbutils</artifactId>
+			<version>1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.39</version>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>10.2.0.4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
+			<version>3.18.0</version>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>

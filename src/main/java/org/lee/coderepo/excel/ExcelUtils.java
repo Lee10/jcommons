@@ -14,6 +14,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -57,6 +58,11 @@ public class ExcelUtils {
 					rowList.add(cellList);
 				}
 			}
+			try {
+				workbook.close();
+			} catch (IOException e) {
+				throw new ExcelException(e.getMessage());
+			}
 			return rowList;
 		}
 		return Collections.emptyList();
@@ -96,6 +102,11 @@ public class ExcelUtils {
 						rowList.add(cellMap);
 					}
 				}
+			}
+			try {
+				workbook.close();
+			} catch (IOException e) {
+				throw new ExcelException(e.getMessage());
 			}
 			return rowList;
 		}

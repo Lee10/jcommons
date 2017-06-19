@@ -8,40 +8,40 @@ import java.util.Date;
  * Created by lee on 2017/2/21.
  */
 public class DateUtils {
-
-	public final static SimpleDateFormat YYYYMMDD = new SimpleDateFormat("yyyyMMdd");
-	public final static SimpleDateFormat YYYYMMDDHH = new SimpleDateFormat("yyyyMMddHH");
-	public final static SimpleDateFormat YYYYMMDDHHMM = new SimpleDateFormat("yyyyMMddHHmm");
-	public final static SimpleDateFormat YYYYMMDDHHMMSS = new SimpleDateFormat("yyyyMMddHHmmss");
-	public final static SimpleDateFormat YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd");
-	public final static SimpleDateFormat YYYY_MM_DD_HH = new SimpleDateFormat("yyyy-MM-dd HH");
-	public final static SimpleDateFormat YYYY_MM_DD_HH_MM = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-	public final static SimpleDateFormat YYYY_MM_DD_HH_MM_SS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
+	
+	public final static String YYYYMMDD = "yyyyMMdd";
+	public final static String YYYYMMDDHH = "yyyyMMddHH";
+	public final static String YYYYMMDDHHMM = "yyyyMMddHHmm";
+	public final static String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
+	public final static String YYYY_MM_DD = "yyyy-MM-dd";
+	public final static String YYYY_MM_DD_HH = "yyyy-MM-dd HH";
+	public final static String YYYY_MM_DD_HH_MM = "yyyy-MM-dd HH:mm";
+	public final static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
+	
 	public static String format(Date date){
-		return YYYY_MM_DD_HH_MM_SS.format(date);
+		return new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS).format(date);
 	}
-
-	public static String format(Date date, SimpleDateFormat format){
-		return format.format(date);
+	
+	public static String format(Date date, String formatStr){
+		return new SimpleDateFormat(formatStr).format(date);
 	}
-
-	public static Date formatDate(Date date, SimpleDateFormat format){
-		return parse(format(date, format), format);
+	
+	public static Date formatDate(Date date, String formatStr){
+		return parse(format(date, formatStr), formatStr);
 	}
-
+	
 	public static Date parse(String source){
 		try {
-			return YYYY_MM_DD_HH_MM_SS.parse(source);
+			return new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS).parse(source);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-
-	public static Date parse(String source, SimpleDateFormat format){
+	
+	public static Date parse(String source, String formatStr){
 		try {
-			return format.parse(source);
+			return new SimpleDateFormat(formatStr).parse(source);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -52,7 +52,7 @@ public class DateUtils {
 		return parse(format(new Date(timestamp)));
 	}
 	
-	public static Date parse(long timestamp, SimpleDateFormat format) {
-		return parse(format(new Date(timestamp), format), format);
+	public static Date parse(long timestamp, String formatStr) {
+		return parse(format(new Date(timestamp), formatStr), formatStr);
 	}
 }

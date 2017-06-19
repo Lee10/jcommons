@@ -28,24 +28,31 @@ public class CsvUtils {
 	 * @return
 	 * @throws IOException
 	 */
-	public final static List<Map<String, Object>> readToMap(String filepath, String encode) throws IOException {
+	public final static List<Map<String, Object>> readToMap(String filepath, String encode) {
 
 		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 
-		CsvReader reader = new CsvReader(filepath, ',', Charset.forName(encode));
-		reader.readHeaders();
-		String[] headers = reader.getHeaders();
-
-		while (reader.readRecord()){
-
-			Map<String, Object> tmpMap = new LinkedHashMap<String, Object>();
-			String[] values = reader.getValues();
-			for (int i = 0; i < headers.length; i++) {
-				if(StringUtils.isNotEmpty(headers[i]) && !isAllEmpty(values)){
-					tmpMap.put(headers[i], values[i]);
+		CsvReader reader = null;
+		try {
+			reader = new CsvReader(filepath, ',', Charset.forName(encode));
+			reader.readHeaders();
+			String[] headers = reader.getHeaders();
+			
+			while (reader.readRecord()) {
+				
+				Map<String, Object> tmpMap = new LinkedHashMap<String, Object>();
+				String[] values = reader.getValues();
+				for (int i = 0; i < headers.length; i++) {
+					if (StringUtils.isNotEmpty(headers[i]) && !isAllEmpty(values)) {
+						tmpMap.put(headers[i], values[i]);
+					}
 				}
+				if (!tmpMap.isEmpty()) resultList.add(tmpMap);
 			}
-			if(!tmpMap.isEmpty()) resultList.add(tmpMap);
+		}catch (IOException e){
+			e.printStackTrace();
+		}finally {
+			if(reader != null) reader.close();
 		}
 		return resultList;
 	}
