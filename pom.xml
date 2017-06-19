@@ -4,34 +4,10 @@
 	
 	<groupId>org.lee.coderepo</groupId>
 	<artifactId>jcommons</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<packaging>jar</packaging>
 	
 	<name>jcommons</name>
-	
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.build.jdk.version>1.8</project.build.jdk.version>
-		<junit.version>4.11</junit.version>
-		<log4j.version>1.2.17</log4j.version>
-		<slf4j.api.version>1.7.21</slf4j.api.version>
-		<commons.lang.version>2.6</commons.lang.version>
-		<commons.collections.version>3.2.1</commons.collections.version>
-		<commons.net.version>3.5</commons.net.version>
-		<commons.httpclient.version>3.1</commons.httpclient.version>
-		<commons.beanutils.version>1.8.0</commons.beanutils.version>
-		<commons.codec.version>1.10</commons.codec.version>
-		<commons.logging.version>1.2</commons.logging.version>
-		<poi.version>3.14</poi.version>
-		<json-lib.version>2.4</json-lib.version>
-		<mail.version>1.4.7</mail.version>
-		<javacsv.version>2.0</javacsv.version>
-		<mongo.driver.version>3.4.2</mongo.driver.version>
-		<httpclient.version>4.5.2</httpclient.version>
-		<kafka.version>0.8.2.2</kafka.version>
-		<javax.servlet.api.version>3.1.0</javax.servlet.api.version>
-		<zookeeper.version>3.4.6</zookeeper.version>
-	</properties>
 
 	<dependencies>
 		
@@ -39,7 +15,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
+			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- junit end -->
@@ -48,12 +24,12 @@
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
+			<version>1.2.17</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.api.version}</version>
+			<version>1.7.21</version>
 		</dependency>
 		<!-- log end -->
 		
@@ -61,7 +37,7 @@
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-			<version>${commons.lang.version}</version>
+			<version>2.6</version>
 		</dependency>
 		<!-- commons-lang end -->
 		
@@ -69,7 +45,7 @@
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
-			<version>${commons.collections.version}</version>
+			<version>3.2.1</version>
 		</dependency>
 		<!-- commons-collections end -->
 		
@@ -77,7 +53,7 @@
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
-			<version>${commons.beanutils.version}</version>
+			<version>1.8.0</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>commons-logging</artifactId>
@@ -91,7 +67,7 @@
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>${commons.codec.version}</version>
+			<version>1.10</version>
 		</dependency>
 		<!-- commons-codec end -->
 		
@@ -99,7 +75,7 @@
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
-			<version>${commons.logging.version}</version>
+			<version>1.2</version>
 		</dependency>
 		<!-- commons-logging end -->
 		
@@ -107,7 +83,7 @@
 		<dependency>
 			<groupId>commons-net</groupId>
 			<artifactId>commons-net</artifactId>
-			<version>${commons.net.version}</version>
+			<version>3.5</version>
 		</dependency>
 		<!-- commons-net end -->
 		
@@ -115,12 +91,12 @@
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>${poi.version}</version>
+			<version>3.14</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>${poi.version}</version>
+			<version>3.14</version>
 		</dependency>
 		<!-- poi end -->
 		
@@ -128,7 +104,7 @@
 		<dependency>
 			<groupId>net.sf.json-lib</groupId>
 			<artifactId>json-lib</artifactId>
-			<version>${json-lib.version}</version>
+			<version>2.4</version>
 			<classifier>jdk15</classifier>
 			<exclusions>
 				<exclusion>
@@ -147,7 +123,7 @@
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<version>${mail.version}</version>
+			<version>1.4.7</version>
 		</dependency>
 		<!-- mail end -->
 		
@@ -155,7 +131,7 @@
 		<dependency>
 			<groupId>net.sourceforge.javacsv</groupId>
 			<artifactId>javacsv</artifactId>
-			<version>${javacsv.version}</version>
+			<version>2.0</version>
 		</dependency>
 		<!-- csv end -->
 		
@@ -163,7 +139,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>${httpclient.version}</version>
+			<version>4.5.2</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>commons-codec</artifactId>
@@ -177,7 +153,7 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>${javax.servlet.api.version}</version>
+			<version>3.1.0</version>
 		</dependency>
 		<!-- servlet-api end -->
 
@@ -210,7 +186,12 @@
 		</dependency>
 
 	</dependencies>
-	
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.jdk.version>1.8</project.build.jdk.version>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
