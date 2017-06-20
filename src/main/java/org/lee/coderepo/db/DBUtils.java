@@ -18,18 +18,20 @@ public class DBUtils {
 	public static <T> List<T> select(Database db, String sql, String[] paramArray, Class<T> clazz) throws
 	                                                                                               ClassNotFoundException,
 	                                                                                               SQLException {
-		String url = buildUrl(db);
-		Class.forName(JdbcDriverMap.get(db.getType()));
-		Connection conn = DriverManager.getConnection(url, db.getUsername(), db.getPassword());
+		Connection conn = getConnecttion(db);
 		return new QueryRunner().query(conn, sql, paramArray, new BeanListHandler<T>(clazz));
 	}
 	
-	public static int update(Database db, String sql, String[] paramArray) throws ClassNotFoundException, SQLException {
+	public static int update(Database db, String sql, Object[] paramArray) throws ClassNotFoundException, SQLException {
 		
+		Connection conn = getConnecttion(db);
+		return new QueryRunner().update(conn, sql, paramArray);
+	}
+	
+	public static Connection getConnecttion(Database db) throws ClassNotFoundException, SQLException {
 		String url = buildUrl(db);
 		Class.forName(JdbcDriverMap.get(db.getType()));
-		Connection conn = DriverManager.getConnection(url, db.getUsername(), db.getPassword());
-		return new QueryRunner().update(conn, sql, paramArray);
+		return DriverManager.getConnection(url, db.getUsername(), db.getPassword());
 	}
 	
 	private static String buildUrl(Database database) {

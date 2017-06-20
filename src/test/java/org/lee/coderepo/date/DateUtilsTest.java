@@ -12,9 +12,8 @@ public class DateUtilsTest {
 
 	@Test
 	public void formatTest(){
-
-		Date currentDate = Calendar.getInstance().getTime();
-		System.out.println(DateUtils.format(currentDate, DateUtils.YYYY_MM_DD));
-		System.out.println(DateUtils.format(currentDate, DateUtils.YYYY_MM_DD_HH));
+		
+		Date date = DateUtils.parse("20170526150659", DateUtils.YYYYMMDDHHMMSS);
+		System.out.println(date);
 	}
 }

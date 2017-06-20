@@ -15,15 +15,11 @@ public class CsvUtilsTest {
 
 	@Test
 	public void readTest(){
-
-		try {
-			List<Map<String, Object>> dataList = CsvUtils.readToMap("/Users/lee/Downloads/test.csv", "utf-8");
-
-			for (Map<String, Object> dataMap : dataList) {
-				System.out.println(dataMap.toString());
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		
+		List<Map<String, Object>> dataList = CsvUtils.readToMap("/Users/lee/Downloads/test.csv", "utf-8");
+		
+		for (Map<String, Object> dataMap : dataList) {
+			System.out.println(dataMap.toString());
 		}
 	}
 

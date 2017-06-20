@@ -1,10 +1,13 @@
 package org.lee.coderepo.json;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
 import org.junit.Test;
 import org.lee.coderepo.excel.Person;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by lee on 2017/2/28.
@@ -29,8 +32,26 @@ public class JsonUtilsTest {
 		String jsonstr = JsonUtils.toString(person, config);
 		System.out.println(jsonstr);
 
-		Person person1 = (Person) JsonUtils.toBean(jsonstr, Person.class);
+		Person person1 = JsonUtils.toBean(jsonstr, Person.class);
 		System.out.println(person1);
+	}
+	
+	@Test
+	public void test(){
+		
+		List<ResponseResult> serialNolist = new ArrayList<ResponseResult>();
+		serialNolist.add(new ResponseResult());
+		serialNolist.add(new ResponseResult());
+		
+		String json = JsonUtils.toString(serialNolist);
+		
+		System.out.println(JsonUtils.toString(serialNolist));
+		
+		JSONArray jsonArray = JSONArray.fromObject(json);
+		for (int i = 0; i < jsonArray.size(); i++) {
+			System.out.println(JsonUtils.toBean(jsonArray.getString(i), ResponseResult.class));
+		}
+		
 	}
 
 }
