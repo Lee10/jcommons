@@ -33,21 +33,13 @@
 		</dependency>
 		<!-- log end -->
 		
-		<!-- commons-lang start -->
+		<!-- commons-lang3 start -->
 		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.6</version>
 		</dependency>
-		<!-- commons-lang end -->
-		
-		<!-- commons-collections start -->
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>3.2.1</version>
-		</dependency>
-		<!-- commons-collections end -->
+		<!-- commons-lang3 end -->
 		
 		<!-- commons-beanutils start -->
 		<dependency>
@@ -64,19 +56,19 @@
 		<!-- commons-beanutils end -->
 		
 		<!-- commons-codec start -->
-		<dependency>
+		<!--<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>1.10</version>
-		</dependency>
+		</dependency>-->
 		<!-- commons-codec end -->
 		
 		<!-- commons-logging start -->
-		<dependency>
+		<!--<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>1.2</version>
-		</dependency>
+		</dependency>-->
 		<!-- commons-logging end -->
 		
 		<!-- commons-net start -->
@@ -134,20 +126,6 @@
 			<version>2.0</version>
 		</dependency>
 		<!-- csv end -->
-		
-		<!-- httpclient start -->
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.2</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>commons-codec</artifactId>
-					<groupId>commons-codec</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<!-- httpclient end -->
 		
 		<!-- servlet-api start -->
 		<dependency>

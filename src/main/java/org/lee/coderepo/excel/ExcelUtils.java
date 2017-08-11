@@ -1,8 +1,7 @@
 package org.lee.coderepo.excel;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -129,7 +128,7 @@ public class ExcelUtils {
 
 			Sheet sheet = workbook.createSheet();
 
-			if (CollectionUtils.isNotEmpty(dataList)) {
+			if (dataList != null && !dataList.isEmpty()) {
 
 				//创建表头
 				Row row = sheet.createRow(0);
@@ -187,7 +186,7 @@ public class ExcelUtils {
 
 			Sheet sheet = workbook.createSheet();
 
-			if (MapUtils.isNotEmpty(titleMap) && CollectionUtils.isNotEmpty(dataList)) {
+			if (titleMap != null && !titleMap.isEmpty() && dataList != null && !dataList.isEmpty()) {
 
 				//创建表头
 				Row row = sheet.createRow(0);

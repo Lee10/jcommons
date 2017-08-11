@@ -2,8 +2,7 @@ package org.lee.coderepo.csv;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -63,7 +62,7 @@ public class CsvUtils {
 		String[] tmpArr = null;
 		List<String[]> tmpList = new ArrayList<String[]>();
 		for (Map<String, Object> dataMap : dataList) {
-			if(CollectionUtils.isEmpty(tmpList)){
+			if(tmpList != null && !tmpList.isEmpty()){
 				tmpArr = new String[dataMap.size()];
 				for (String key : dataMap.keySet()){
 					tmpArr[index++] = key;
@@ -77,7 +76,7 @@ public class CsvUtils {
 			}
 			tmpList.add(tmpArr);
 		}
-		return CollectionUtils.isNotEmpty(tmpList)? write(filepath, encode, tmpList) : false;
+		return tmpList != null && !tmpList.isEmpty()? write(filepath, encode, tmpList) : false;
 	}
 
 	public final static boolean write(String filepath, String encode, List<String[]> dataList){
