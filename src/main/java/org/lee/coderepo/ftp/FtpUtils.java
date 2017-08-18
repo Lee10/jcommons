@@ -1,6 +1,5 @@
 package org.lee.coderepo.ftp;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
@@ -24,7 +23,6 @@ public class FtpUtils {
 
 	public final static boolean downloadFile(String host, String port, String username, String password, String ftppath, String filepath, boolean isActive){
 
-		port = StringUtils.defaultIfEmpty(port, port);
 		FTPClient client = connectServer(host, port, username, password, isActive);
 		if(client != null) {
 			try {
@@ -59,7 +57,6 @@ public class FtpUtils {
 
 	public final static boolean uploadFile(String host, String port, String username, String password, String ftppath, String filepath, boolean isActive){
 
-		port = StringUtils.defaultIfEmpty(port, port);
 		FTPClient client = connectServer(host, port, username, password, isActive);
 		if(client != null) {
 			try {

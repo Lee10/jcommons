@@ -1,6 +1,6 @@
 package org.lee.coderepo.http;
 
-import org.apache.commons.lang3.StringUtils;
+import org.lee.coderepo.util.StringUtils;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -22,7 +22,6 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by lee on 2017/2/24.

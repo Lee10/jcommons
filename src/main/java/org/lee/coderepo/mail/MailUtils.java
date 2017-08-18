@@ -1,6 +1,6 @@
 package org.lee.coderepo.mail;
 
-import org.apache.commons.lang3.StringUtils;
+import org.lee.coderepo.util.StringUtils;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;

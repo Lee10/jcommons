@@ -1,6 +1,6 @@
 package org.lee.coderepo.regex;
 
-import org.apache.commons.lang3.StringUtils;
+import org.lee.coderepo.util.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,7 +16,7 @@ public class RegexUtils {
 	public static final String DOUBLE = "^-?([1-9]\\d*\\.\\d*|0\\.\\d*[1-9]\\d*|0?\\.0+|0)$";
 	
 	public static String escapeExprSpecialWord(String keyword) {
-		if(StringUtils.isBlank(keyword)) return keyword;
+		if(StringUtils.isEmpty(keyword)) return keyword;
 		String[] fbsArr = { "\\", "$", "(", ")", "*", "+", ".", "[", "]", "?", "^", "{", "}", "|" };
 		for (String key : fbsArr) {
 			if (keyword.contains(key)) keyword = keyword.replace(key, "\\" + key);

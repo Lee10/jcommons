@@ -1,7 +1,5 @@
 package org.lee.coderepo.uid;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicLong;
@@ -32,7 +30,7 @@ public class UIDUtils {
 				uniqueId = new AtomicLong(0);
 				return getId(size);
 			}
-			sb.append(RandomStringUtils.randomNumeric(size - sb.toString().length()));
+//			sb.append(RandomStringUtils.randomNumeric(size - sb.toString().length()));
 		}
 		return sb.toString();
 	}

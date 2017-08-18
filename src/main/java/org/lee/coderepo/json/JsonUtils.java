@@ -1,14 +1,15 @@
 package org.lee.coderepo.json;
 
-import net.sf.ezmorph.object.DateMorpher;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.JsonConfig;
-import net.sf.json.util.JSONUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -18,67 +19,56 @@ import java.util.Map;
  */
 public class JsonUtils {
 
-	public static String toString(Object obj) {
-		if (obj == null) return "";
-		if (obj instanceof List || obj instanceof Map) return JSONArray.fromObject(obj).toString();
-		return JSONObject.fromObject(obj).toString();
+	private Gson gson = null;
+
+	private JsonUtils(){
+		gson = new Gson();
 	}
 
-	public static String toString(Object obj, JsonConfig jsonConfig) {
-		if (obj == null) return "";
-		if (obj instanceof List || obj instanceof Map) return JSONArray.fromObject(obj, jsonConfig).toString();
-		return JSONObject.fromObject(obj, jsonConfig).toString();
-	}
-	
-	public static <T> T toBean(String json, Class<T> clazz) {
-		
-		T t = null;
-		try {
-			JSONObject jsonObj = JSONObject.fromObject(json);
-			String[] dateFormats = new String[]{"yyyy-MM-dd HH:mm:ss"};    // 登记时间格式，以防止JSONObject将时间解析成当前系统时间
-			JSONUtils.getMorpherRegistry().registerMorpher(new DateMorpher(dateFormats));
-			t = (T) JSONObject.toBean(jsonObj, clazz);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return t;
-	}
-	
-	public static <T> T toBean(String json, Class<T> clazz, Map<String, Class<T>> classMap) {
-		
-		T t = null;
-		try {
-			JSONObject jsonObj = JSONObject.fromObject(json);
-			String[] dateFormats = new String[]{"yyyy-MM-dd HH:mm:ss"};    // 登记时间格式，以防止JSONObject将时间解析成当前系统时间
-			JSONUtils.getMorpherRegistry().registerMorpher(new DateMorpher(dateFormats));
-			t = (T) JSONObject.toBean(jsonObj, clazz, classMap);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return t;
+	private JsonUtils(String format){
+		gson = new GsonBuilder().setDateFormat(format).serializeNulls().create();
 	}
 
-	@SuppressWarnings("unchecked")
-	public static Map<String, Object> toMap(String jsonStr) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		//最外层解析
-		JSONObject json = JSONObject.fromObject(jsonStr);
-		for (Object k : json.keySet()) {
-			Object v = json.get(k);
-			//如果内层还是数组的话，继续解析
-			if (v instanceof JSONArray) {
-				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-				Iterator<JSONObject> it = ((JSONArray) v).iterator();
-				while (it.hasNext()) {
-					JSONObject json2 = it.next();
-					list.add(toMap(json2.toString()));
-				}
-				map.put(k.toString(), list);
-			} else {
-				map.put(k.toString(), v);
+	public static JsonUtils build(){
+		return new JsonUtils();
+	}
+
+	public static JsonUtils build(String dateFormat){
+		return new JsonUtils(dateFormat);
+	}
+
+	public String toJson(Object obj){
+		return gson != null? gson.toJson(obj) : "";
+	}
+
+	public <T> T toBean(String json, Class<T> clazz){
+		return gson != null? gson.fromJson(json, clazz) : null;
+	}
+
+	public <T> List<T> toList(String json, Class<T> clazz){
+		List<T> objList = new ArrayList<T>();
+		if(gson != null){
+			JsonArray jsonArray = new JsonParser().parse(json).getAsJsonArray();
+			for (JsonElement jsonElement : jsonArray) {
+				objList.add(gson.fromJson(jsonElement, clazz));
 			}
 		}
-		return map;
+		return objList;
+	}
+
+	public <T> List<Map<String, T>> toList(String json){
+		List<Map<String, T>> mapList = new ArrayList<Map<String, T>>();
+		if(gson != null){
+			return gson.fromJson(json, new TypeToken<List<Map<String, T>>>(){}.getType());
+		}
+		return mapList;
+	}
+
+	public <T> Map<String, T> toMap(String json){
+		if(gson != null){
+			return gson.fromJson(json, new TypeToken<Map<String, T>>(){}.getType());
+		}
+		return new HashMap<String, T>();
 	}
 
 }
