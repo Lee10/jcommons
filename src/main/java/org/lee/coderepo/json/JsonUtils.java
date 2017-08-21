@@ -1,74 +1,85 @@
 package org.lee.coderepo.json;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
-import java.text.DateFormat;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
- * Created by lee on 2017/2/14.
- * json 操作类
+ * Created by 10064350 on 2017/8/21.
  */
 public class JsonUtils {
 
-	private Gson gson = null;
+	private static ObjectMapper objectMapper;
 
-	private JsonUtils(){
-		gson = new Gson();
+	static {
+		objectMapper = new ObjectMapper();
+		//去掉默认的时间戳格式
+		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+		//设置为中国上海时区
+		objectMapper.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+		//反序列化时，属性不存在的兼容处理
+		objectMapper.getDeserializationConfig().withoutFeatures(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		//序列化时，日期的统一格式
+		objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
 	}
 
-	private JsonUtils(String format){
-		gson = new GsonBuilder().setDateFormat(format).serializeNulls().create();
+	public static String toJson(Object obj) {
+		try {
+			return objectMapper.writeValueAsString(obj);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 
-	public static JsonUtils build(){
-		return new JsonUtils();
+	public static <T> T jsonToBean(String json, Class<T> clazz) {
+		try {
+			return objectMapper.readValue(json, clazz);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	public static JsonUtils build(String dateFormat){
-		return new JsonUtils(dateFormat);
-	}
-
-	public String toJson(Object obj){
-		return gson != null? gson.toJson(obj) : "";
-	}
-
-	public <T> T toBean(String json, Class<T> clazz){
-		return gson != null? gson.fromJson(json, clazz) : null;
-	}
-
-	public <T> List<T> toList(String json, Class<T> clazz){
-		List<T> objList = new ArrayList<T>();
-		if(gson != null){
-			JsonArray jsonArray = new JsonParser().parse(json).getAsJsonArray();
-			for (JsonElement jsonElement : jsonArray) {
-				objList.add(gson.fromJson(jsonElement, clazz));
+	public static <T> Map<String, T> jsonToMap(String jsonStr, Class<T> clazz) {
+		Map<String, T> result = new HashMap<String, T>();
+		try {
+			Map<String, Map<String, Object>> map = objectMapper.readValue(jsonStr, new TypeReference<Map<String, T>>() {});
+			for (Map.Entry<String, Map<String, Object>> entry : map.entrySet()) {
+				result.put(entry.getKey(), mapToBean(entry.getValue(), clazz));
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		return objList;
+		return result;
 	}
 
-	public <T> List<Map<String, T>> toList(String json){
-		List<Map<String, T>> mapList = new ArrayList<Map<String, T>>();
-		if(gson != null){
-			return gson.fromJson(json, new TypeToken<List<Map<String, T>>>(){}.getType());
+	public static <T> List<T> jsonToList(String json, Class<T> clazz) {
+		List<T> resultList = new ArrayList<T>();
+		try {
+			List<Map<String, Object>> list = objectMapper.readValue(json, new TypeReference<List<T>>() {
+			});
+			for (Map<String, Object> objMap : list) {
+				resultList.add(mapToBean(objMap, clazz));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		return mapList;
+		return resultList;
 	}
 
-	public <T> Map<String, T> toMap(String json){
-		if(gson != null){
-			return gson.fromJson(json, new TypeToken<Map<String, T>>(){}.getType());
-		}
-		return new HashMap<String, T>();
+	public static <T> T mapToBean(Map map, Class<T> clazz) {
+		return objectMapper.convertValue(map, clazz);
 	}
 
 }
