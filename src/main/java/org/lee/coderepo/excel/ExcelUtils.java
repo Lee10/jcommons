@@ -134,7 +134,7 @@ public class ExcelUtils {
 				Cell cell = null;
 				Map<String, Object> tmpMap = dataList.get(0);
 				int titleSize = tmpMap.size();
-				List<String> titleList = new ArrayList<>(tmpMap.keySet());
+				List<String> titleList = new ArrayList<String>(tmpMap.keySet());
 				for (int i = 0; i < titleSize; i++) {
 					cell = row.createCell(i);
 					cell.setCellValue(titleList.get(i));
